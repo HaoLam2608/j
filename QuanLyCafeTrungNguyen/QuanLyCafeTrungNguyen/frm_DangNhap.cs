@@ -33,7 +33,7 @@ namespace QuanLyCafeTrungNguyen
 		{
 			var ma = txt_tk.Text;
 			var mk = txt_mk.Text;
-			string query = $"SELECT * FROM NhanVien,NHOMQUYEN WHERE NhanVien.MaNhanVien = '{ma}' AND NhanVien.PASSWORD = {mk} and NhanVien.MANHOM = NHOMQUYEN.MANHOM";
+			string query = $"SELECT * FROM NhanVien,NHOMQUYEN WHERE NhanVien.TaiKhoan = '{ma}' AND NhanVien.PASSWORD = {mk} and NhanVien.MANHOM = NHOMQUYEN.MANHOM";
 			DataTable dt = DBConnect.Instance.getTable(query);
 			if (dt.Rows.Count > 0)
 			{

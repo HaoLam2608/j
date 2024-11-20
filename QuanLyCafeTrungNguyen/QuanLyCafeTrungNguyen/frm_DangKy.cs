@@ -24,11 +24,11 @@ namespace QuanLyCafeTrungNguyen
 			var mk = txt_mk.Text;
 			var sdt = txt_SDT.Text;
 			var diachi = txt_DiaChi.Text;
-			var manv = "NV00021";
+			var manv = DBConnect.Instance.TaoManv();
 
 			if (!string.IsNullOrEmpty(taikhoan) && !string.IsNullOrEmpty(mk) && !string.IsNullOrEmpty(sdt) && !string.IsNullOrEmpty(diachi))
 			{
-				string sql = $"insert into NhanVien values('{taikhoan}', 'AN123',3,'{sdt}' , '{diachi}', 1 ,'NHOM02' , '{mk}')";
+				string sql = $"insert into NhanVien values('{manv}', '{taikhoan}',3,'{sdt}' , '{diachi}', 1 ,'NHOM02' , '{mk}')";
 
 
 				db.ExcuteProc("exec ThemNguoiDung @username , @pass", new object[] { taikhoan.Trim(), mk.Trim() });

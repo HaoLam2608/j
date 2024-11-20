@@ -47,6 +47,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DBConnect.cs" />
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
     <Compile Include="frm_DangKy.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -95,6 +101,12 @@
     <Compile Include="frm_QLKho.Designer.cs">
       <DependentUpon>frm_QLKho.cs</DependentUpon>
     </Compile>
+    <Compile Include="frm_QuanLyNV.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frm_QuanLyNV.Designer.cs">
+      <DependentUpon>frm_QuanLyNV.cs</DependentUpon>
+    </Compile>
     <Compile Include="frm_TrangThanhToan.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -125,6 +137,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frm_QLKho.resx">
       <DependentUpon>frm_QLKho.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frm_QuanLyNV.resx">
+      <DependentUpon>frm_QuanLyNV.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frm_TrangThanhToan.resx">
       <DependentUpon>frm_TrangThanhToan.cs</DependentUpon>

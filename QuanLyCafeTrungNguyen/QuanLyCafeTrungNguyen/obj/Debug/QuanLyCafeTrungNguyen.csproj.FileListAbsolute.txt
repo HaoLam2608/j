@@ -37,3 +37,21 @@ D:\DownLoad\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\ob
 D:\DownLoad\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.frmThemKH.resources
 D:\DownLoad\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.frm_HoaDon.resources
 D:\DownLoad\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.frm_QLKho.resources
+C:\Users\Gigabyte\Downloads\Đồ Án\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\bin\Debug\QuanLyCafeTrungNguyen.exe.config
+C:\Users\Gigabyte\Downloads\Đồ Án\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\bin\Debug\QuanLyCafeTrungNguyen.exe
+C:\Users\Gigabyte\Downloads\Đồ Án\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\bin\Debug\QuanLyCafeTrungNguyen.pdb
+C:\Users\Gigabyte\Downloads\Đồ Án\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.csproj.AssemblyReference.cache
+C:\Users\Gigabyte\Downloads\Đồ Án\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.frm_TrangChu.resources
+C:\Users\Gigabyte\Downloads\Đồ Án\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.frmThemKH.resources
+C:\Users\Gigabyte\Downloads\Đồ Án\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.frm_DangNhap.resources
+C:\Users\Gigabyte\Downloads\Đồ Án\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.frm_DanhSachBan.resources
+C:\Users\Gigabyte\Downloads\Đồ Án\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.frm_HoaDon.resources
+C:\Users\Gigabyte\Downloads\Đồ Án\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.frm_NhanVien.resources
+C:\Users\Gigabyte\Downloads\Đồ Án\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.frm_QLKho.resources
+C:\Users\Gigabyte\Downloads\Đồ Án\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.frm_QuanLyNV.resources
+C:\Users\Gigabyte\Downloads\Đồ Án\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.frm_TrangThanhToan.resources
+C:\Users\Gigabyte\Downloads\Đồ Án\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.Properties.Resources.resources
+C:\Users\Gigabyte\Downloads\Đồ Án\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.csproj.GenerateResource.cache
+C:\Users\Gigabyte\Downloads\Đồ Án\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.csproj.CoreCompileInputs.cache
+C:\Users\Gigabyte\Downloads\Đồ Án\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.exe
+C:\Users\Gigabyte\Downloads\Đồ Án\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.pdb

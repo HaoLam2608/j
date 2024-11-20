@@ -110,7 +110,7 @@ namespace QuanLyCafeTrungNguyen
 			}
 			catch(Exception ex)
 			{
-				MessageBox.Show("Không có quyền truy cập","Lỗi" , MessageBoxButtons.OK , MessageBoxIcon.Error);
+				MessageBox.Show(ex.Message,"Lỗi" , MessageBoxButtons.OK , MessageBoxIcon.Error);
 			}
 			
 

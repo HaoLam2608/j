@@ -57,5 +57,10 @@ namespace QuanLyCafeTrungNguyen
 		{
 			OpenChildForm(new frm_QLKho());
 		}
-	}
+
+        private void btn_NhanVien_Click(object sender, EventArgs e)
+        {
+			OpenChildForm(new frm_QuanLyNV());
+        }
+    }
 }

@@ -14,7 +14,7 @@ namespace QuanLyCafeTrungNguyen
 		private SqlTransaction transaction;
 		private static DBConnect instance;
 		public static DBConnect Instance { get { if (instance == null) instance = new DBConnect(); return DBConnect.instance; } set => DBConnect.instance = value; }
-		public string strcn = "Data Source=MSI\\SQLEXPRESS; Initial Catalog= QLCF; Integrated Security=true;";
+		public string strcn = "Data Source=DESKTOP-1P0AMFP; Initial Catalog= QLCF; Integrated Security=true;";
 		public SqlConnection con = new SqlConnection();
 		public DBConnect()
 		{
@@ -56,10 +56,8 @@ namespace QuanLyCafeTrungNguyen
 		public int getNonquery(string strQuery)
 		{
 			Open();
-			SqlCommand cmd = new SqlCommand(strQuery, con);
+			SqlCommand cmd = new SqlCommand(strQuery, con, transaction);
 			int kq = cmd.ExecuteNonQuery();
-			Close();
-
 			return kq;
 		}
 		public (string customerName, string customerType,string customerID) GetCustomerInfoByPhoneUsingStoredProcedure(string phoneNumber)
@@ -136,9 +134,7 @@ namespace QuanLyCafeTrungNguyen
 		}
 		public void OpenConnectionWithLogin(string username)
 		{
-			if (con.State != ConnectionState.Open)
-			{
-				con.Open();
+			Open();
 				transaction = con.BeginTransaction();
 
 				using (SqlCommand cmd = new SqlCommand("EXEC AS LOGIN = @username", con, transaction))
@@ -146,7 +142,6 @@ namespace QuanLyCafeTrungNguyen
 					cmd.Parameters.AddWithValue("@username", username);
 					cmd.ExecuteNonQuery();
 				}
-			}
 		}
 		public void RevertConnection()
 		{
@@ -262,21 +257,30 @@ namespace QuanLyCafeTrungNguyen
 			string result = String.Empty;
 
 
-			string sql = "exec TAOMANV";
-			using (SqlCommand cmd = new SqlCommand(sql, con))
+			string sql = "TAOMANV";
+			using (SqlCommand cmd = new SqlCommand(sql, con, transaction))
 			{
 				Open();
-				cmd.CommandType = CommandType.StoredProcedure;
-				SqlParameter sqlParameter = new SqlParameter("@MANV", SqlDbType.NVarChar, 5)
+                cmd.CommandType = CommandType.StoredProcedure;
+				SqlParameter sqlParameter = new SqlParameter("@MANV", SqlDbType.NVarChar, 7)
 				{
 					Direction = ParameterDirection.Output
 				};
 				cmd.Parameters.Add(sqlParameter);
 
-				result = sqlParameter.Value.ToString();
-
-				Close();
-			}
+				cmd.ExecuteNonQuery();
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                    result = sqlParameter.Value.ToString();
+                }
+                catch (Exception ex)
+                {
+                  
+                    result = "Lỗi: " + ex.Message;
+                }
+                
+            }
 			return result;
 
 		}
