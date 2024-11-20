@@ -5,7 +5,6 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace QuanLyCafeTrungNguyen
@@ -169,11 +168,6 @@ namespace QuanLyCafeTrungNguyen
 				MessageBox.Show("Không có quyền truy cập", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 
-		}
-		//Reload dữ liệu cho bảng nguyên liệu
-		private void btn_Reload_Click(object sender, EventArgs e)
-		{
-			HienThiDSNL();
 		}
 		#endregion
 
@@ -510,17 +504,50 @@ namespace QuanLyCafeTrungNguyen
 					}
 				}
 				MessageBox.Show("Lưu thành công");
-			}
+                HienThiDSNL();
+            }
 			else
 				MessageBox.Show("Lưu không thành công");
 		}
-		#endregion
 
-		#endregion
+        private void btn_XoaNL_Xuat_Click(object sender, EventArgs e)
+        {
+            DialogResult r = new DialogResult();
+            r = MessageBox.Show("Bạn có muốn xóa dòng này không!", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (r == DialogResult.Yes)
+            {
+                if (selectedRowIndex_Xuat != -1 && selectedRowIndex_Xuat < dtgv_dsNLDeXuat.Rows.Count)
+                {
+                    // Lấy dòng được chọn
+                    DataGridViewRow row = dtgv_dsNLDeXuat.Rows[selectedRowIndex_Xuat];
 
+                    //Lấy ra chỉ số dòng được chọn
+                    int index = row.Index;
 
-		#region Ràng buộc dữ liệu
-		private void cmb_NguyenLieu_SelectionChangeCommitted(object sender, EventArgs e)
+                    dtDSNL_Xuat = (DataTable)dtgv_dsNLDeXuat.DataSource;
+
+                    // Xóa dòng tương ứng trong DataTable
+                    dtDSNL_Xuat.Rows[index].Delete();
+
+                    // Cập nhật lại DataGridView
+                    dtDSNL_Xuat.AcceptChanges();
+                    dtgv_dsNLDeXuat.Refresh();
+
+                    if (dtDSNL_Xuat.Rows.Count <= 0)
+                        btn_LuuPX.Enabled = IsEnalbleLuuPX(); //Nếu ds không có item nào thì ẩn nút lưu phiếu nhập
+                }
+                else
+                {
+                    MessageBox.Show("Vui lòng chọn một dòng để xóa.");
+                }
+            }
+        }
+        #endregion
+
+        #endregion
+
+        #region Ràng buộc dữ liệu
+        private void cmb_NguyenLieu_SelectionChangeCommitted(object sender, EventArgs e)
 		{
 			btn_AddNL.Enabled = IsEnableBtnAddNL();
 		}
@@ -652,8 +679,9 @@ namespace QuanLyCafeTrungNguyen
 
 
 
-		#endregion
 
+        #endregion
 
-	}
+        
+    }
 }
