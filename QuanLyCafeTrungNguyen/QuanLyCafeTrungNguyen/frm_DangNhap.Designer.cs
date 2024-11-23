@@ -36,8 +36,6 @@
 			this.btn_dn = new System.Windows.Forms.Button();
 			this.button2 = new System.Windows.Forms.Button();
 			this.panel1 = new System.Windows.Forms.Panel();
-			this.link_DangKy = new System.Windows.Forms.LinkLabel();
-			this.label5 = new System.Windows.Forms.Label();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.panel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -124,8 +122,6 @@
 			// panel1
 			// 
 			this.panel1.BackColor = System.Drawing.Color.RosyBrown;
-			this.panel1.Controls.Add(this.link_DangKy);
-			this.panel1.Controls.Add(this.label5);
 			this.panel1.Controls.Add(this.label1);
 			this.panel1.Controls.Add(this.button2);
 			this.panel1.Controls.Add(this.label2);
@@ -138,25 +134,6 @@
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(559, 394);
 			this.panel1.TabIndex = 5;
-			// 
-			// link_DangKy
-			// 
-			this.link_DangKy.Location = new System.Drawing.Point(280, 357);
-			this.link_DangKy.Name = "link_DangKy";
-			this.link_DangKy.Size = new System.Drawing.Size(69, 23);
-			this.link_DangKy.TabIndex = 8;
-			this.link_DangKy.TabStop = true;
-			this.link_DangKy.Text = "Đăng ký";
-			this.link_DangKy.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
-			// 
-			// label5
-			// 
-			this.label5.Location = new System.Drawing.Point(107, 357);
-			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(179, 23);
-			this.label5.TabIndex = 7;
-			this.label5.Text = "Bạn không có tài khoản?";
-			this.label5.Click += new System.EventHandler(this.label5_Click);
 			// 
 			// pictureBox1
 			// 
@@ -189,9 +166,6 @@
 			this.ResumeLayout(false);
 
 		}
-		private System.Windows.Forms.LinkLabel link_DangKy;
-
-		private System.Windows.Forms.Label label5;
 
 		#endregion
 

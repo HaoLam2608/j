@@ -22,7 +22,7 @@ namespace QuanLyCafeTrungNguyen
         {
             string sql = "select * from XEMDSNV";
             dgv_NhanVien.DataSource = DBConnect.Instance.getTable(sql);
-            string sql1 = "select * from CHUCVU where TENCHUCVU != N'Nhân Viên Thu Ngân'";
+            string sql1 = "select * from CHUCVU";
             cb_Chucvu.DataSource = DBConnect.Instance.getTable(sql1);
             cb_Chucvu.DisplayMember = "TENCHUCVU";
             cb_Chucvu.ValueMember = "MACV";
@@ -39,14 +39,16 @@ namespace QuanLyCafeTrungNguyen
         private void dgv_NhanVien_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             DataTable dt = (DataTable)dgv_NhanVien.DataSource;
+
             txtManv.Text = dt.Rows[e.RowIndex]["MaNhanVien"].ToString().Trim();
             txtTennv.Text = dt.Rows[e.RowIndex]["TenNhanVien"].ToString().Trim();
             txtDiaChi.Text = dt.Rows[e.RowIndex]["DIACHI"].ToString().Trim();
             txtSDT.Text = dt.Rows[e.RowIndex]["SoDienThoai"].ToString().Trim();
             cb_Chucvu.Text = dt.Rows[e.RowIndex]["TENCHUCVU"].ToString();
-            txtTenDN.Text = dt.Rows[e.RowIndex]["TaiKhoan"].ToString().Trim();
+            txtTenDN.Text = dt.Rows[e.RowIndex]["TenDN"].ToString().Trim();
             txtMatKhau1.Text = dt.Rows[e.RowIndex]["PASSWORD"].ToString().Trim();
-            seletedIndex = e.RowIndex;
+			cb_cn.SelectedValue = dt.Rows[e.RowIndex]["MaChiNhanh"].ToString();
+			seletedIndex = e.RowIndex;
         }
 
         private void btn_TIemKiem_Click(object sender, EventArgs e)

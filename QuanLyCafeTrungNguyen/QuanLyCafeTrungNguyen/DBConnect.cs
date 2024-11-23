@@ -14,7 +14,7 @@ namespace QuanLyCafeTrungNguyen
 		private SqlTransaction transaction;
 		private static DBConnect instance;
 		public static DBConnect Instance { get { if (instance == null) instance = new DBConnect(); return DBConnect.instance; } set => DBConnect.instance = value; }
-		public string strcn = "Data Source=DESKTOP-1P0AMFP; Initial Catalog= QLCF; Integrated Security=true;";
+		public string strcn = "Data Source=MSI\\SQLEXPRESS; Initial Catalog= QLCF; Integrated Security=true;";
 		public SqlConnection con = new SqlConnection();
 		public DBConnect()
 		{
@@ -256,34 +256,27 @@ namespace QuanLyCafeTrungNguyen
 		{
 			string result = String.Empty;
 
-
-			string sql = "TAOMANV";
-			using (SqlCommand cmd = new SqlCommand(sql, con, transaction))
+			string sql = "SELECT dbo.fn_CreateMaNhanVien()"; // Câu lệnh SQL để gọi function
+			try
 			{
-				Open();
-                cmd.CommandType = CommandType.StoredProcedure;
-				SqlParameter sqlParameter = new SqlParameter("@MANV", SqlDbType.NVarChar, 7)
+				using (SqlCommand cmd = new SqlCommand(sql, con, transaction))
 				{
-					Direction = ParameterDirection.Output
-				};
-				cmd.Parameters.Add(sqlParameter);
+					Open();  // Mở kết nối nếu chưa mở
+					cmd.CommandType = CommandType.Text; // Thực thi câu lệnh SQL đơn giản (không phải stored procedure)
 
-				cmd.ExecuteNonQuery();
-                try
-                {
-                    cmd.ExecuteNonQuery();
-                    result = sqlParameter.Value.ToString();
-                }
-                catch (Exception ex)
-                {
-                  
-                    result = "Lỗi: " + ex.Message;
-                }
-                
-            }
+					// Thực thi câu lệnh và nhận kết quả từ function
+					result = cmd.ExecuteScalar().ToString();
+				}
+			}
+			catch (Exception ex)
+			{
+				// Xử lý lỗi và trả về thông báo
+				result = "Lỗi: " + ex.Message;
+			}
+
 			return result;
-
 		}
+
 	}
 	//test
 }

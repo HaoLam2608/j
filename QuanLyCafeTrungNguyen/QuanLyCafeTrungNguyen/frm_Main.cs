@@ -62,5 +62,10 @@ namespace QuanLyCafeTrungNguyen
         {
 			OpenChildForm(new frm_QuanLyNV());
         }
-    }
+
+		private void button1_Click(object sender, EventArgs e)
+		{
+
+		}
+	}
 }

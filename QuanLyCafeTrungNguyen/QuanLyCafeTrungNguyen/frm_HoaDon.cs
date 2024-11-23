@@ -20,7 +20,7 @@ namespace QuanLyCafeTrungNguyen
 
 		private void frm_HoaDon_Load(object sender, EventArgs e)
 		{
-			string sql = "select * from HoaDon";
+			string sql = "SELECT * FROM dbo.fn_ViewAllInvoices();";
 			dgv_dsHoaDon.DataSource = db.getTable(sql);
 			cb_Machinhanh.DataSource = db.getTable("select * from ChiNhanh");
 			cb_Machinhanh.DisplayMember = "TenChiNhanh";
