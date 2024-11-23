@@ -1,6 +1,4 @@
-﻿DROP DATABASE QLCF
-
-create database QLCF;
+﻿create database QLCF;
 go
 use QLCF
 go
@@ -19,7 +17,7 @@ CREATE TABLE LOAIKH
 	MALOAI INT IDENTITY(1,1) PRIMARY KEY,
 	TENLOAI NVARCHAR(100) --Thân thiết, VIP, THÀNH VIÊN
 )
-
+go
 CREATE TABLE KHACHHANG (
     MaKH NCHAR(20) PRIMARY KEY,
     TenKH NVARCHAR(50) NOT NULL,
@@ -154,6 +152,7 @@ CREATE TABLE NhanVien (
     FOREIGN KEY (MaChiNhanh) REFERENCES ChiNhanh(MaChiNhanh)
 );
 alter table NhanVien add PASSWORD nchar(50)
+alter table NhanVien add username nchar(50)
 
 CREATE TABLE THONGTINNHANVIEN(
 	MaNhanVien NCHAR(12) FOREIGN KEY REFERENCES NhanVien(MaNhanVien),
@@ -163,16 +162,6 @@ CREATE TABLE THONGTINNHANVIEN(
 	CCCD NVARCHAR(15),
 	GIOITINH NVARCHAR(5) CHECK (GIOITINH IN ('Nam',N'Nữ')),
 	BANGCAP NVARCHAR(40) 
-)
-
-CREATE TABLE LUONG
-(
-	MaNhanVien NCHAR(12) FOREIGN KEY REFERENCES NhanVien(MaNhanVien),
-	SoNgayLam int CHECK (SoNgayLam > 0),
-    LuongCoBan float CHECK (LuongCoBan > 0),
-	XEPLOAI NVARCHAR(60), --XẾP LOẠI TRONG 1 THÁNG CỦA NHÂN VIÊN, xếp theo số ngày làm
-	TIENTHUONG FLOAT, --THƯỞNG NẾU XẾP LOẠI S HOẶC A
-	TIENPHAT FLOAT --PHẠT NẾU XẾP LOẠI C HOẶC D
 )
 
 CREATE TABLE PHIEUXUAT
@@ -210,7 +199,7 @@ values
 ('NHOM03' , 'NVKho'),
 ('NHOM04' , 'NhanVien')
 
-delete from NhomQuyen
+
 INSERT INTO CHUCVU
 VALUES
 (N'Quản lý'),
@@ -242,29 +231,6 @@ VALUES
 ('NV00018', N'Nguyễn Minh Chiến', 1, '0990125678', N'90 Đường Dương Bá Trạc, Quận 8, TP.HCM', 3, 'NHOM03'),
 ('NV00019', N'Nguyễn Công Tiến', 2, '0912346789', N'12 Đường Trường Chinh, Quận Tân Bình, TP.HCM', 1, 'NHOM01'),
 ('NV00020', N'Nguyễn Hoàng Đăng', 3, '0923457890', N'34 Đường Xô Viết Nghệ Tĩnh, Quận Bình Thạnh, TP.HCM', 2, 'NHOM02');
-
-INSERT INTO LUONG (MaNhanVien, SoNgayLam, LuongCoBan, XEPLOAI, TIENTHUONG, TIENPHAT)
-VALUES
-('NV00001', 22, 5000000, N'S', 1000000, 0),
-('NV00002', 20, 4500000, N'A', 500000, 0),
-('NV00003', 18, 4000000, N'B', 0, 0),
-('NV00004', 25, 5500000, N'S', 1500000, 0),
-('NV00005', 15, 3500000, N'C', 0, 200000),
-('NV00006', 20, 4500000, N'A', 500000, 0),
-('NV00007', 22, 5000000, N'S', 1000000, 0),
-('NV00008', 17, 3800000, N'B', 0, 0),
-('NV00009', 19, 4200000, N'B', 0, 0),
-('NV00010', 21, 4800000, N'A', 500000, 0),
-('NV00011', 16, 3700000, N'C', 0, 200000),
-('NV00012', 23, 5100000, N'S', 1200000, 0),
-('NV00013', 18, 4000000, N'B', 0, 0),
-('NV00014', 20, 4500000, N'A', 500000, 0),
-('NV00015', 22, 5000000, N'S', 1000000, 0),
-('NV00016', 19, 4200000, N'B', 0, 0),
-('NV00017', 21, 4800000, N'A', 500000, 0),
-('NV00018', 20, 4500000, N'A', 500000, 0),
-('NV00019', 17, 3800000, N'B', 0, 0),
-('NV00020', 23, 5100000, N'S', 1200000, 0);
 
 ----------------Thêm dữ liệu nhóm Khách hàng----------------
 INSERT INTO LOAIKH 
@@ -544,26 +510,6 @@ INSERT INTO ChiTietPX (MAPX, MaNguyenLieu, SOLUONGXUAT) VALUES
 -- Chi tiết phiếu xuất PX00005
 ('PX00005', 'NL00027', 50),  -- 50 thùng bột cacao
 ('PX00005', 'NL00011', 30);  -- 30 bao trà gừng
-
-
-
-
-CREATE VIEW vw_DoanhThuChiNhanhHangThang AS
-SELECT 
-    cn.MaChiNhanh,
-    cn.TenChiNhanh,
-    YEAR(hd.NgayTao) AS Nam,
-    MONTH(hd.NgayTao) AS Thang,
-    SUM(hd.THANHTIEN) AS TongDoanhThu
-FROM 
-    HoaDon hd
-JOIN 
-    ChiNhanh cn ON hd.MaChiNhanh = cn.MaChiNhanh
-GROUP BY 
-    cn.MaChiNhanh, cn.TenChiNhanh, YEAR(hd.NgayTao), MONTH(hd.NgayTao);
-
-SELECT * FROM vw_DoanhThuChiNhanhHangThang;
-
 
 
 

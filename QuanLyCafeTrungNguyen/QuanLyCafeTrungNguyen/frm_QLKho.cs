@@ -520,7 +520,7 @@ namespace QuanLyCafeTrungNguyen
                 {
                     // Lấy dòng được chọn
                     DataGridViewRow row = dtgv_dsNLDeXuat.Rows[selectedRowIndex_Xuat];
-
+					
                     //Lấy ra chỉ số dòng được chọn
                     int index = row.Index;
 

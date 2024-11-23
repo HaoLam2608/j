@@ -55,3 +55,21 @@ C:\Users\Gigabyte\Downloads\Đồ Án\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNgu
 C:\Users\Gigabyte\Downloads\Đồ Án\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.csproj.CoreCompileInputs.cache
 C:\Users\Gigabyte\Downloads\Đồ Án\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.exe
 C:\Users\Gigabyte\Downloads\Đồ Án\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.pdb
+D:\HocTap\code\NAM_3\HeQuanTri\DoAnCuoiKi\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.csproj.AssemblyReference.cache
+D:\HocTap\code\NAM_3\HeQuanTri\DoAnCuoiKi\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.frm_TrangChu.resources
+D:\HocTap\code\NAM_3\HeQuanTri\DoAnCuoiKi\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.frmThemKH.resources
+D:\HocTap\code\NAM_3\HeQuanTri\DoAnCuoiKi\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.frm_DangNhap.resources
+D:\HocTap\code\NAM_3\HeQuanTri\DoAnCuoiKi\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.frm_DanhSachBan.resources
+D:\HocTap\code\NAM_3\HeQuanTri\DoAnCuoiKi\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.frm_HoaDon.resources
+D:\HocTap\code\NAM_3\HeQuanTri\DoAnCuoiKi\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.frm_NhanVien.resources
+D:\HocTap\code\NAM_3\HeQuanTri\DoAnCuoiKi\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.frm_QLKho.resources
+D:\HocTap\code\NAM_3\HeQuanTri\DoAnCuoiKi\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.frm_QuanLyNV.resources
+D:\HocTap\code\NAM_3\HeQuanTri\DoAnCuoiKi\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.frm_TrangThanhToan.resources
+D:\HocTap\code\NAM_3\HeQuanTri\DoAnCuoiKi\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.Properties.Resources.resources
+D:\HocTap\code\NAM_3\HeQuanTri\DoAnCuoiKi\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.csproj.GenerateResource.cache
+D:\HocTap\code\NAM_3\HeQuanTri\DoAnCuoiKi\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.csproj.CoreCompileInputs.cache
+D:\HocTap\code\NAM_3\HeQuanTri\DoAnCuoiKi\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.exe
+D:\HocTap\code\NAM_3\HeQuanTri\DoAnCuoiKi\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\obj\Debug\QuanLyCafeTrungNguyen.pdb
+D:\HocTap\code\NAM_3\HeQuanTri\DoAnCuoiKi\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\bin\Debug\QuanLyCafeTrungNguyen.exe.config
+D:\HocTap\code\NAM_3\HeQuanTri\DoAnCuoiKi\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\bin\Debug\QuanLyCafeTrungNguyen.exe
+D:\HocTap\code\NAM_3\HeQuanTri\DoAnCuoiKi\j\QuanLyCafeTrungNguyen\QuanLyCafeTrungNguyen\bin\Debug\QuanLyCafeTrungNguyen.pdb

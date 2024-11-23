@@ -1,5 +1,14 @@
-﻿---------------PROCEDURE-------------------
-go
+﻿USE QLCF
+GO
+
+---------------BACKUP DATABASE----------------
+Alter Database QLCF
+Set Recovery full
+
+
+
+---------------PROCEDURE----------------------
+--1/ Thêm khách hàng
 CREATE PROCEDURE ThemKhachHang
     @MaKH NCHAR(20),
     @TenKH NVARCHAR(50),
@@ -29,9 +38,12 @@ BEGIN
     PRINT N'Thêm khách hàng thành công.'
 END
 GO
+---Test procedure
 EXEC ThemKhachHang @MaKH = 'KH001', @TenKH = N'Nguyễn Văn A', @MALOAI = 1, @SDT = '0901234567', @SoDiemThuong = 10
 
 go
+
+--2/ Update thông tin khách hàng
 CREATE PROCEDURE SuaKhachHang
     @MaKH NCHAR(20),
     @TenKH NVARCHAR(50),
@@ -61,6 +73,8 @@ BEGIN
     END
 END
 GO
+
+--3/ Xóa 1 khách hàng
 CREATE PROCEDURE XoaKhachHang
     @MaKH NCHAR(20)
 AS
@@ -73,6 +87,8 @@ BEGIN
 END
 
 GO
+
+--4/ Lấy số điện thoại của khách hàng
 CREATE PROCEDURE sp_GetCustomerInfoByPhone
     @SDT NVARCHAR(15) -- Tham số đầu vào là số điện thoại
 AS
@@ -84,6 +100,7 @@ BEGIN
     WHERE KH.SDT = @SDT;
 END
 
+---5/ Thêm phiếu xuất 
 CREATE PROC INSERTPX @maPX NCHAR(20), @maNV NCHAR(20), @maCN NCHAR(20), @ngayTaoPX DATETIME, @moTa NVARCHAR(500)
 AS
 BEGIN
@@ -91,6 +108,7 @@ BEGIN
 	(@maPX, @maNV, @maCN, @ngayTaoPX, @moTa)
 END
 
+--6/ Thêm chi tiết phiếu xuất
 CREATE PROC INSERTCTPX @maPX NCHAR(20), @maNL NCHAR(20), @soLuongXuat INT
 AS
 BEGIN
@@ -98,6 +116,7 @@ BEGIN
 	(@maPX, @maNL, @soLuongXuat)
 END
 
+---7/ Hiện số điểm thưởng của khách hàng
 CREATE PROCEDURE sp_DisplayCustomerPoints
 AS
 BEGIN
@@ -128,23 +147,94 @@ BEGIN
     CLOSE CustomerCursor;
     DEALLOCATE CustomerCursor;
 END;
+
+--Test Procedure
 EXEC sp_DisplayCustomerPoints;
 
-CREATE PROC ThemNguoiDung @username nchar(20) , @pass nchar(20)
-as
-begin
-IF EXISTS(SELECT 1 FROM SYS.server_principals WHERE NAME = @username AND type_desc='SQL_LOGIN')
-	RETURN;
-ELSE
-	BEGIN
-		DECLARE @Sql nvarchar(MAX)
-		SET @Sql = 'CREATE LOGIN ['+@username+'] WITH PASSWORD = ''' + @pass + '''';
-		EXEC(@Sql)
-		exec sp_adduser @username , @username
-		EXEC sp_addrolemember 'ThuNgan', @username
-	END
-end
------------------FUNCTION---------------------
+---8/thủ tục kết hợp cursor hiển thị mã khách hàng, tên khách hàng và doanh số của khách hàng.
+CREATE PROCEDURE sp_DoanhSoKhachHang
+AS
+BEGIN
+    DECLARE @MaKH NCHAR(20),
+            @TenKH NVARCHAR(50),
+            @DoanhSo DECIMAL(10,2)
+    DECLARE khachHang_cursor CURSOR FOR
+    SELECT MaKH, TenKH
+    FROM KHACHHANG
+    OPEN khachHang_cursor
+    FETCH NEXT FROM khachHang_cursor INTO @MaKH, @TenKH
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        SELECT @DoanhSo = SUM(THANHTIEN)
+        FROM HoaDon hd
+        JOIN ChiTietHoaDon cthd ON hd.MaHoaDon = cthd.MaHoaDon
+        WHERE hd.MAKH = @MaKH
+       
+        PRINT N'Mã khách hàng: ' + @MaKH + N', Tên khách hàng: ' + @TenKH + N', Doanh số: ' + CAST(ISNULL(@DoanhSo, 0) AS NVARCHAR)
+        FETCH NEXT FROM khachHang_cursor INTO @MaKH, @TenKH
+    END
+    CLOSE khachHang_cursor
+    DEALLOCATE khachHang_cursor
+END
+GO
+
+---Test cursor kết hợp procedure
+EXEC sp_DoanhSoKhachHang;
+
+---9/ thủ tục kết hợp cursor hiển thị mã hàng, tên hàng, tổng số lượng nhập, tổng số lượng xuất các nguyên liệu trong một khoảng thời gian từ ngày – đến ngày.
+CREATE PROCEDURE sp_ThongKeNguyenLieuNhapXuat
+    @NgayBatDau DATETIME,
+    @NgayKetThuc DATETIME
+AS
+BEGIN
+    DECLARE @MaNguyenLieu NCHAR(20),
+            @TenNguyenLieu NVARCHAR(100),
+            @TongSoLuongNhap INT,
+            @TongSoLuongXuat INT
+
+    DECLARE nguyenLieu_cursor CURSOR FOR
+    SELECT MaNguyenLieu, TenNguyenLieu
+    FROM NguyenLieu
+
+    OPEN nguyenLieu_cursor
+
+    FETCH NEXT FROM nguyenLieu_cursor INTO @MaNguyenLieu, @TenNguyenLieu
+
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        SELECT @TongSoLuongNhap = SUM(ctpn.SoLuong)
+        FROM ChiTietPhieuNhap ctpn
+        JOIN PhieuNhap pn ON ctpn.MaPhieuNhap = pn.MaPhieuNhap
+        WHERE ctpn.MaNguyenLieu = @MaNguyenLieu 
+          AND pn.NgayNhap BETWEEN @NgayBatDau AND @NgayKetThuc
+
+        SELECT @TongSoLuongXuat = SUM(ctpx.SOLUONGXUAT)
+        FROM CHITIETPX ctpx
+        JOIN PHIEUXUAT px ON ctpx.MAPX = px.MAPX
+        WHERE ctpx.MaNguyenLieu = @MaNguyenLieu 
+          AND px.NGAYTAO BETWEEN @NgayBatDau AND @NgayKetThuc
+
+        PRINT N'Mã nguyên liệu: ' + @MaNguyenLieu + 
+              N', Tên nguyên liệu: ' + @TenNguyenLieu + 
+              N', Tổng số lượng nhập: ' + CAST(ISNULL(@TongSoLuongNhap, 0) AS NVARCHAR) + 
+              N', Tổng số lượng xuất: ' + CAST(ISNULL(@TongSoLuongXuat, 0) AS NVARCHAR)
+
+        FETCH NEXT FROM nguyenLieu_cursor INTO @MaNguyenLieu, @TenNguyenLieu
+    END
+
+    CLOSE nguyenLieu_cursor
+    DEALLOCATE nguyenLieu_cursor
+END
+GO
+
+---Test cursor
+EXEC sp_ThongKeNguyenLieuNhapXuat 
+    @NgayBatDau = '2024-01-01',
+    @NgayKetThuc = '2024-12-31';
+
+
+-------------------------------------FUNCTION-----------------------------------------
+---5. Xem danh sách hóa đơn
 CREATE FUNCTION dbo.fn_ViewAllInvoices()
 RETURNS TABLE
 AS
@@ -156,18 +246,14 @@ RETURN
         HD.GIAMGIA,
         HD.TongTien,
         HD.THANHTIEN,
-        HD.MaChiNhanh,
-        HD.MaKH,
-        CT.MaSanPham,
-        CT.SoLuong,
-        CT.DonGia
+        TenChiNhanh,
+        HD.MaKH
     FROM 
         HoaDon AS HD
-    JOIN 
-        ChiTietHoaDon AS CT ON HD.MaHoaDon = CT.MaHoaDon
+	JOIN ChiNhanh c ON C.MaChiNhanh = HD.MaChiNhanh
 );
-SELECT * FROM dbo.fn_ViewAllInvoices();
 
+---1. Lấy ra các mã loại mà nhà cung cấp đó cung ứng
 CREATE FUNCTION LAYLOAITHEONHACC (@maNhaCC NCHAR(20))
 RETURNS @tbl_LoaiTheoNhaCC TABLE (MALOAI NCHAR(20), TENLOAI NVARCHAR(100))
 AS
@@ -184,6 +270,7 @@ AS
 			RETURN
 	END
 
+---2. Tìm nguyên liệu theo một kí tự bất kì
 CREATE FUNCTION TIMKIEMNL (@KiTu Nvarchar(100))
 RETURNS @TABLE TABLE (MaNguyenLieu NCHAR(20), TenNguyenLieu NVARCHAR(100)) 
 AS
@@ -195,6 +282,7 @@ BEGIN
 	return
 END
 
+---3. Thống kê doanh thu của quán 
 CREATE FUNCTION TINHTONGDOANHTHU(@Thang int , @Nam int)
 RETURNS table
 AS
@@ -204,7 +292,29 @@ AS
 	group by month(HoaDon.NgayTao),year(HoaDon.NgayTao)
 	
 select * from dbo.TINHTONGDOANHTHU(null , null)
------------------TRIGGER-------------------------
+
+---4. Tạo mã nhân viên
+CREATE FUNCTION dbo.fn_CreateMaNhanVien()
+RETURNS NCHAR(12)
+AS
+BEGIN
+    DECLARE @NewMa NVARCHAR(12)
+    DECLARE @MaxMa NVARCHAR(12)
+    SELECT @MaxMa = MAX(MaNhanVien) FROM NhanVien
+    IF @MaxMa IS NULL
+    BEGIN
+        SET @NewMa = 'NV00001'
+    END
+    ELSE
+    BEGIN
+        SET @NewMa = 'NV' + RIGHT('00000' + CAST(CAST(SUBSTRING(@MaxMa, 3, 5) AS INT) + 1 AS NVARCHAR(5)), 5)
+    END
+    RETURN @NewMa
+END
+
+------------------------------------TRIGGER--------------------------------
+---1. Cập nhật lại số điểm thưởng khi khách hàng order một hóa đơn mới 
+------và loại khách hàng khi khách đó đạt đủ số điểm thưởng
 CREATE TRIGGER trg_UpdateRewardPoints
 ON HoaDon
 AFTER INSERT
@@ -241,6 +351,7 @@ BEGIN
     WHERE MaKH = @MaKH;
 END;
 
+---2. Cập nhật lại số lượng tồn kho của một nguyên liệu khi nhập mới
 CREATE TRIGGER UPDATESOLLUONGTON ON ChiTietPhieuNhap
 FOR INSERT
 AS
@@ -252,18 +363,62 @@ AS
 		WHERE MaNguyenLieu = (SELECT MaNguyenLieu FROM inserted)
 	END
 
+----3. Cập nhật lại số lượng tồn kho của một nguyên liệu khi xuất kho
 CREATE TRIGGER UPDATESLTONKHIXUAT ON CHITIETPX
 FOR INSERT
 AS
 BEGIN
 	DECLARE @soLuong INT
 		SET @soLuong = (SELECT SOLUONGXUAT FROM inserted)
+
 		UPDATE NGUYENLIEU
 		SET SOLUONGTON = SOLUONGTON - @soLuong
 		WHERE MaNguyenLieu = (SELECT MaNguyenLieu FROM inserted)
 END
 
---------------------VIEW------------------------
+---4. Kiểm tra số lượng tồn của nguyên liệu không được âm
+CREATE TRIGGER KTRSOLUONGTON ON NGUYENLIEU
+FOR INSERT, UPDATE
+AS
+BEGIN
+	IF EXISTS (SELECT SOLUONGTON FROM inserted WHERE SOLUONGTON < 0)
+		BEGIN
+			PRINT N'SỐ LƯỢNG TỒN KHÔNG ĐƯỢC ÂM'
+			ROLLBACK TRAN
+		END
+END
+
+---5. Kiểm tra số lượng tồn của nguyên liệu sau khi xuất nếu dưới 10 thì hiện thông báo cần nhập thêm nguyên liệu
+CREATE TRIGGER KTRSLTON ON NGUYENLIEU
+AFTER INSERT, UPDATE
+AS
+BEGIN
+	IF EXISTS (SELECT SOLUONGTON FROM inserted WHERE SOLUONGTON < 10)
+		BEGIN
+			PRINT N'NGUYÊN LIỆU ĐÃ GẦN HẾT. HÃY NHẬP THÊM'
+		END
+END
+
+---6. Kiểm tra số lượng xuất phải lớn hơn 0 và nhỏ hơn số lượng tồn
+CREATE TRIGGER KTRSLXUAT ON ChiTietPX
+FOR INSERT, UPDATE
+AS
+BEGIN
+	DECLARE @SLTON INT
+	SET @SLTON = (SELECT SOLUONGTON FROM NguyenLieu WHERE MaNguyenLieu = (SELECT MaNguyenLieu FROM inserted))
+	IF (SELECT SOLUONGXUAT FROM inserted) < 0 OR (SELECT SOLUONGXUAT FROM inserted) >= @SLTON
+		BEGIN
+			PRINT N'KHÔNG ĐỦ NGUYÊN LIỆU ĐỂ XUẤT'
+			ROLLBACK TRAN
+		END
+END
+
+---7. Phân quyền cho 1 nhân viên khi thêm mới nhân viên đó
+
+
+
+--------------------------------------VIEW--------------------------------------------------
+---1. Tạo view xem đầy đủ thông tin nhân viên
 CREATE VIEW vw_ThongTinNhanVienChiNhanh AS
 SELECT NV.MaNhanVien, NV.TenNhanVien, CV.TENCHUCVU, NV.SoDienThoai, NV.DIACHI, CN.TenChiNhanh, NQ.TENNHOM
 FROM NhanVien NV
@@ -273,6 +428,7 @@ JOIN NHOMQUYEN NQ ON NV.MANHOM = NQ.MANHOM;
 
 SELECT * FROM vw_ThongTinNhanVienChiNhanh
 
+---2. Xem thông tin khách hàng, biết khách hàng đó thuộc loại nào
 CREATE VIEW vw_CustomerInfo AS
 SELECT 
     KH.MaKH, 
@@ -286,6 +442,8 @@ FROM
 JOIN 
     LOAIKH LK ON KH.MALOAI = LK.MALOAI;
 
+
+---3. Tạo view để xem danh sách nguyên liệu, cho biết nguyên liệu thuộc loại nào, ai cung cấp, đơn vị của nguyên liệu
 CREATE VIEW DSNGUYENLIEU
 AS
 	SELECT nl.MaNguyenLieu, l.MALOAI, TENLOAI, TenNguyenLieu, SOLUONGTON, TENDVT, TenNhaCungCap, n.MaNhaCungCap 
@@ -296,23 +454,144 @@ AS
 	join NhaCungCap n on n.MaNhaCungCap = c.MaNhaCungCap
 
 
-----------------------ROLE--------------------
+---4. Xem tổng số lượng nguyên liệu mà từng nhà cung cấp cung ứng
+CREATE VIEW VIEW_4
+AS
+	SELECT TenNhaCungCap, COUNT(c.MaNguyenLieu) AS 'SỐ LƯỢNG NGUYÊN LIỆU'
+	FROM CUNGUNG c
+	JOIN NhaCungCap nc ON nc.MaNhaCungCap = c.MaNhaCungCap
+	GROUP BY nc.TenNhaCungCap
+
+---5. Xem các nguyên liệu của từng nhà cung cấp đó có cung ứng
+CREATE VIEW VIEW_5
+AS
+	SELECT c.MaNhaCungCap, TenNhaCungCap, TenNguyenLieu
+	FROM CUNGUNG c
+	JOIN NguyenLieu nl ON nl.MaNguyenLieu = c.MaNguyenLieu
+	JOIN NhaCungCap nc ON nc.MaNhaCungCap = c.MaNhaCungCap
+
+---6. Xem danh sách nhân viên
+CREATE VIEW XEMDSNV AS
+SELECT 
+    MaNhanVien,
+    TenNhanVien,
+	Lk.TENCHUCVU,
+    SoDienThoai,
+    DIACHI,
+    MaChiNhanh,
+    MANHOM,
+	PASSWORD,
+	username
+FROM 
+    NhanVien NV
+JOIN 
+    CHUCVU LK ON NV.MACV= LK.MACV;
+
+
+
+-----------------------------------CURSOR-----------------------------------------
+---1/ Tìm ra 3 sản phẩm bán chạy nhất
+DECLARE @MaSanPham NCHAR(20),
+        @TenSanPham NVARCHAR(100),
+        @TongSoLuong INT
+DECLARE sanpham_cursor CURSOR FOR
+SELECT 
+    sp.MaSanPham,
+    sp.TenSanPham,
+    SUM(cthd.SoLuong) AS TongSoLuong
+FROM 
+    ChiTietHoaDon cthd
+JOIN 
+    SanPham sp ON cthd.MaSanPham = sp.MaSanPham
+GROUP BY 
+    sp.MaSanPham, sp.TenSanPham
+ORDER BY 
+    TongSoLuong DESC
+OPEN sanpham_cursor
+FETCH NEXT FROM sanpham_cursor INTO @MaSanPham, @TenSanPham, @TongSoLuong
+
+DECLARE @Counter INT = 1
+WHILE @@FETCH_STATUS = 0 AND @Counter <= 3
+BEGIN
+    PRINT N'Sản phẩm: ' + @TenSanPham + N', Mã sản phẩm: ' + @MaSanPham + N', Tổng số lượng bán: ' + CAST(@TongSoLuong AS NVARCHAR(10))
+    SET @Counter = @Counter + 1
+    FETCH NEXT FROM sanpham_cursor INTO @MaSanPham, @TenSanPham, @TongSoLuong
+END
+CLOSE sanpham_cursor
+DEALLOCATE sanpham_cursor
+
+
+---2/ Tìm 3 khách hàng có doanh số cao nhất
+DECLARE @MaKH NCHAR(20),
+        @TenKH NVARCHAR(50),
+        @DoanhThu DECIMAL(18, 2)
+
+CREATE TABLE #DoanhThuKhachHang (
+    MaKH NCHAR(20),
+    TenKH NVARCHAR(50),
+    DoanhThu DECIMAL(18, 2)
+)
+
+INSERT INTO #DoanhThuKhachHang (MaKH, TenKH, DoanhThu)
+SELECT 
+    kh.MaKH,
+    kh.TenKH,
+    SUM(hd.THANHTIEN) AS DoanhThu
+FROM 
+    KHACHHANG kh
+JOIN 
+    HoaDon hd ON kh.MaKH = hd.MAKH
+GROUP BY 
+    kh.MaKH, kh.TenKH
+
+DECLARE top3_cursor CURSOR FOR
+SELECT TOP 3 
+    MaKH,
+    TenKH,
+    DoanhThu
+FROM 
+    #DoanhThuKhachHang
+ORDER BY 
+    DoanhThu DESC
+
+OPEN top3_cursor
+
+FETCH NEXT FROM top3_cursor INTO @MaKH, @TenKH, @DoanhThu
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    PRINT 'Mã khách hàng: ' + @MaKH + 
+          ', Tên khách hàng: ' + @TenKH + 
+          ', Doanh số: ' + CAST(@DoanhThu AS NVARCHAR)
+
+    FETCH NEXT FROM top3_cursor INTO @MaKH, @TenKH, @DoanhThu
+END
+
+CLOSE top3_cursor
+DEALLOCATE top3_cursor
+
+DROP TABLE #DoanhThuKhachHang
+
+GO
+---------------------------------------ROLE--------------------------------------
 CREATE ROLE Kho
 CREATE ROLE ThuNgan
 CREATE ROLE QuanLy
 
-GRANT SELECT ON SanPham TO ThuNgan
-
+-----------Quyền nhân viên kho-------
 GRANT SELECT, INSERT, UPDATE, DELETE ON NguyenLieu TO Kho;
 GRANT SELECT, INSERT, UPDATE, DELETE ON PhieuNhap TO Kho;
 GRANT SELECT, INSERT, UPDATE, DELETE ON ChiTietPhieuNhap TO Kho;
 GRANT SELECT, INSERT, UPDATE, DELETE ON PHIEUXUAT TO Kho;
 GRANT SELECT, INSERT, UPDATE, DELETE ON CHITIETPX TO Kho;
 
+----------Quyền nhân viên thu ngân-------
+GRANT SELECT ON SanPham TO ThuNgan
 GRANT SELECT, INSERT, UPDATE ON KHACHHANG TO ThuNgan;
 GRANT SELECT, INSERT, UPDATE ON HoaDon TO ThuNgan;
 GRANT SELECT, INSERT, UPDATE ON ChiTietHoaDon TO ThuNgan;
 
+-------------Quyền quản lý----------------
 GRANT SELECT, INSERT, UPDATE, DELETE ON ChiNhanh TO QuanLy;
 GRANT SELECT, INSERT, UPDATE, DELETE ON LOAIKH TO QuanLy;
 GRANT SELECT, INSERT, UPDATE, DELETE ON KHACHHANG TO QuanLy;
